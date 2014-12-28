@@ -7,11 +7,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.net.URL;
-import java.util.HashMap;
+
 
 /**
- * Created by user on 23.12.2014.
+ * C reated by user on 23.12.2014.
  */
 public class MainFrame implements ActionListener{
 
@@ -35,7 +34,7 @@ public class MainFrame implements ActionListener{
         jmiOpen.addActionListener(this );
         jmiClose.addActionListener(this );
 
-
+//test first  commit
 
 
         // желательные размеры окна
@@ -57,7 +56,6 @@ public class MainFrame implements ActionListener{
                 File file = fileopen.getSelectedFile();
                 Main.pathToData = file.getAbsolutePath().toString();
                 if (DatabaseActions.open(Main.pathToData)) {
-
 
                 }
                 else {
