@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Main {
-    public static String pathToData;
+    //public static String pathToData;
    public  static void main (String[] args) {
        System.out.println("hello");
        new MainFrame();
