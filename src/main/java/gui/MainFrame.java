@@ -1,8 +1,6 @@
 package gui;
 
-import com.healthmarketscience.jackcess.*;
-import model.DaoAccess;
-import model.TableModelImpl;
+import model.TableModelRead;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
@@ -35,7 +33,7 @@ public class MainFrame implements ActionListener{
 
         JInternalFrame jfrmInt = new JInternalFrame("internal",true,true,true,true);
         jfrmInt.getContentPane().setLayout(new BorderLayout());
-        TableModel model = new TableModelImpl(new DaoAccess("Пошлины"));
+        TableModel model = new TableModelRead("Заявки");
         JTable table = new JTable(model);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         JScrollPane jScrollPane = new JScrollPane(table);

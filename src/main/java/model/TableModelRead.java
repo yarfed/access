@@ -2,28 +2,26 @@ package model;
 
 import com.healthmarketscience.jackcess.*;
 
+import javax.swing.event.TableModelListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by user on 29.12.2014.
  */
-public class DaoAccess {
+public class TableModelRead implements javax.swing.table.TableModel{
    private String tableName;
     private ArrayList <Object> row;
    private ArrayList<ColumnProperties> columnsProperties;
-
+    private Set<TableModelListener> listeners = new HashSet<TableModelListener>();
     private ArrayList <ArrayList<Object>> tableClone;
 
-    public DaoAccess(String tableName){
+    public TableModelRead(String tableName){
         this.tableName=tableName;
         try {
             Database db = DatabaseBuilder.open(new File("FIP.mdb"));
             Table table = db.getTable(tableName);
-
 
             columnsProperties = new ArrayList<ColumnProperties>();
             for(Column column : table.getColumns()) {
@@ -41,16 +39,17 @@ public class DaoAccess {
                 } else {
                     property=column.getProperties().get("RowSource");
                     columnProperties.isForeignData = true;
-                    System.out.println(property.getValue().toString());
+
                     String[] foreignSource = getForeignSource(property.getValue().toString());
-                   Table extTable = db.getTable(foreignSource[0]);
+                    columnProperties.extTableName=foreignSource[0];
+                    columnProperties.extTableKey=foreignSource[1];
+                    columnProperties.extTableData=foreignSource[3];
+
+                    Table extTable = db.getTable(columnProperties.extTableName);
                     HashMap foreignData = new HashMap<Integer,Object>();
-                   // System.out.println(extTable);
-System.out.println(foreignSource[0]);
-                    columnProperties.clazz = getColumnClass(extTable.getColumn(foreignSource[3]));
-                  for (Row row:extTable){
-                       foreignData.put(row.get(foreignSource[1]),row.get(foreignSource[3]));
-                        System.out.println(row.get(foreignSource[1]).toString()+ row.get(foreignSource[3]));
+                    columnProperties.clazz = getColumnClass(extTable.getColumn(columnProperties.extTableData));
+                    for (Row row:extTable){
+                       foreignData.put(row.get(columnProperties.extTableKey),row.get(columnProperties.extTableData));
                     }
                     columnProperties.foreignData=foreignData;
                 }
@@ -128,19 +127,33 @@ System.out.println(foreignSource[0]);
 
     public Object getValueAt(int rowIndex, int columnIndex) {
       Object result = tableClone.get(rowIndex).get(columnIndex);
-        if (result.equals("Null")) return result;
+        if (result.equals("Null")) return null;
         ColumnProperties columnProperties = columnsProperties.get(columnIndex);
         if (columnProperties.isForeignData) {
             return columnProperties.foreignData.get(result);
         }
         return result;
     }
+    public void addTableModelListener(TableModelListener listener) {
+        listeners.add(listener);
+    }
+    public void removeTableModelListener(TableModelListener listener) {
+        listeners.remove(listener);
+    }
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return false;
+    }
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+    }
 
-private class ColumnProperties {
+    private class ColumnProperties {
     private String name;
     private Class clazz;
     private Boolean isForeignData;
     private HashMap<Integer,Object> foreignData;
+    private String extTableName;
+    private String extTableKey;
+    private String extTableData;
 
 }
 }
