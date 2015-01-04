@@ -25,5 +25,6 @@ public class TableFrame extends JInternalFrame {
         setPreferredSize(new Dimension(640, 480));
        desktopPane.add(this);
         pack();
+        toFront();
     }
 }
