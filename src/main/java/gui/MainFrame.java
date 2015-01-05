@@ -18,6 +18,8 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.net.URI;
+import java.net.URL;
 
 
 /**
@@ -28,15 +30,17 @@ public class MainFrame implements ActionListener ,MouseListener{
     JList jlist;
     Object[] tableNames = null;
     JDesktopPane desktopPane;
+    public static URL pathToData;
     public MainFrame() {
-        //init
+        pathToData = getClass().getClassLoader().getResource("/FIP.mdb");
+        System.out.println(pathToData);
 
         try {
-            Database db = DatabaseBuilder.open(new File("FIP.mdb"));
+            Database db = DatabaseBuilder.open(new File(pathToData.toURI()));
             tableNames = db.getTableNames().toArray();
             db.close();
 
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             System.out.println("database not found");
         }
 
@@ -55,9 +59,6 @@ public class MainFrame implements ActionListener ,MouseListener{
         jmiClose.addActionListener(this);
         desktopPane = new JDesktopPane();
 
-        //  new TableFrame("Заказчики",desktopPane);
-        //  new TableFrame("Заявки",desktopPane);
-        // new TableFrame("Пошлины",desktopPane);
         JInternalFrame tablesFrm = new JInternalFrame("all Tables", true, true, true, true);
         tablesFrm.getContentPane().setLayout(new BorderLayout());
          jlist= new JList(tableNames);

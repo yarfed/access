@@ -1,6 +1,8 @@
 package model;
 
 import com.healthmarketscience.jackcess.*;
+import gui.Main;
+import gui.MainFrame;
 
 import javax.swing.event.TableModelListener;
 import java.io.File;
@@ -31,13 +33,13 @@ public class TableModelFactory implements javax.swing.table.TableModel{
     public TableModelFactory(String tableName){
        this.tableName=tableName;
         try {
-            db = DatabaseBuilder.open(new File("FIP.mdb"));
+            db = DatabaseBuilder.open(new File(MainFrame.pathToData.toURI()));
             Table table = db.getTable(tableName);
             columnsProperties = getColumnsProperties(table);
             refreshExternalData();
             refreshData();
             db.close();
-        } catch (IOException ex){
+        } catch (Exception ex){
             System.out.println("database not found");
         }
 
