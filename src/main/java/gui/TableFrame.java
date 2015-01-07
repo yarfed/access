@@ -11,7 +11,7 @@ import java.awt.*;
  */
 public class TableFrame extends JInternalFrame {
 
-    public TableFrame (String tableName, JDesktopPane desktopPane) {
+    public TableFrame (String tableName) {
       super(tableName,true,true,true,true);
         getContentPane().setLayout(new BorderLayout());
         TableModel model = new TableModelFactory(tableName);
@@ -23,7 +23,7 @@ public class TableFrame extends JInternalFrame {
         add(jScrollPane,BorderLayout.CENTER );
         setVisible(true);
         setPreferredSize(new Dimension(640, 480));
-       desktopPane.add(this);
+       //desktopPane.add(this);
         pack();
         toFront();
     }

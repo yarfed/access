@@ -1,7 +1,7 @@
 package model;
 
 import com.healthmarketscience.jackcess.*;
-import gui.Main;
+
 import gui.MainFrame;
 
 import javax.swing.event.TableModelListener;
@@ -33,7 +33,7 @@ public class TableModelFactory implements javax.swing.table.TableModel{
     public TableModelFactory(String tableName){
        this.tableName=tableName;
         try {
-            db = DatabaseBuilder.open(new File(MainFrame.pathToData.toURI()));
+            db = DatabaseBuilder.open(new File(MainFrame.pathToData));
             Table table = db.getTable(tableName);
             columnsProperties = getColumnsProperties(table);
             refreshExternalData();

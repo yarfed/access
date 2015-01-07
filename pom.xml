@@ -35,7 +35,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>gui.Main</mainClass>
+                            <mainClass>FIPAccess</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

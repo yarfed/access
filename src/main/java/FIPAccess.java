@@ -1,12 +1,10 @@
-package gui;
-
 import com.healthmarketscience.jackcess.*;
 import gui.MainFrame;
 
 import java.io.File;
 import java.io.IOException;
 
-public class Main {
+public class FIPAccess {
 
 
    public  static void main (String[] args) {

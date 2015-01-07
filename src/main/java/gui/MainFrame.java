@@ -3,23 +3,14 @@ package gui;
 
 import com.healthmarketscience.jackcess.Database;
 import com.healthmarketscience.jackcess.DatabaseBuilder;
-import com.healthmarketscience.jackcess.Table;
-import model.TableModelFactory;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.URI;
-import java.net.URL;
 
 
 /**
@@ -30,21 +21,24 @@ public class MainFrame implements ActionListener ,MouseListener{
     JList jlist;
     Object[] tableNames = null;
     JDesktopPane desktopPane;
-    public static URL pathToData;
+    public static String pathToData;
     public MainFrame() {
-        pathToData = getClass().getClassLoader().getResource("/FIP.mdb");
-        System.out.println(pathToData);
 
+       pathToData= "FIP.mdb";
+        System.out.println(pathToData);
+        UIManager.put("Table.gridColor", Color.gray);
         try {
-            Database db = DatabaseBuilder.open(new File(pathToData.toURI()));
+            Database db = DatabaseBuilder.open(new File(pathToData));
             tableNames = db.getTableNames().toArray();
             db.close();
 
         } catch (Exception ex) {
             System.out.println("database not found");
+            tableNames =new String[] {"чтото неправильно с путями к БД"};
+
         }
 
-        jfrm = new JFrame("Opus");
+        jfrm = new JFrame("Access Viewer");
 
         JMenuBar jmb = new JMenuBar();
         JMenu jmFile = new JMenu("File");
@@ -73,7 +67,7 @@ public class MainFrame implements ActionListener ,MouseListener{
         tablesFrm.setPreferredSize(new Dimension(700, 500));
         desktopPane.add(tablesFrm);
         tablesFrm.pack();
-
+        desktopPane.add(new ClaimsForm());
 
         jfrm.add(desktopPane);
         // желательные размеры окна
@@ -106,7 +100,9 @@ public class MainFrame implements ActionListener ,MouseListener{
         if(event.getClickCount()==2) {
             int index = jlist.getSelectedIndex();
             String name = tableNames[index].toString();
-           new TableFrame(name,desktopPane);
+            JInternalFrame iframe =new TableFrame(name);
+           desktopPane.add(iframe);
+            iframe.toFront();
         }
     }
     public void mousePressed(MouseEvent event) {
