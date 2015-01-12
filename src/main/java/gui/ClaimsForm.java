@@ -26,7 +26,9 @@ public class ClaimsForm  extends JInternalFrame{
 
         JLabel label11 = new JLabel("Заявитель");
         jPanel.add(label11);
-        JTextField text11 = new JTextField("client");
+        String temp[] ={"ghhjkkkkk","hgggggggggg","and company"};
+        JComboBox text11 = new JComboBox();
+        text11.setBackground(Color.WHITE);
         jPanel.add(text11);
 
         JLabel label12 = new JLabel("Код заявки");
@@ -71,6 +73,21 @@ public class ClaimsForm  extends JInternalFrame{
         JTextField text27 = new JTextField("11.11.12");
         jPanel.add(text27);
 
+        JLabel label31 = new JLabel("Описание");
+        jPanel.add(label31);
+        JTextField text31 = new JTextField("");
+        jPanel.add(text31);
+
+        JLabel label32 = new JLabel("Тип");
+        jPanel.add(label32);
+        JTextField text32 = new JTextField("");
+        jPanel.add(text32);
+
+        JLabel label33 = new JLabel("Решение");
+        jPanel.add(label33);
+        JTextField text33 = new JTextField("11.11.12");
+        jPanel.add(text33);
+
      sl.putConstraint(R,jPanel,1100,L,jPanel);
       sl.putConstraint(D,jPanel,400,U,jPanel);
 
@@ -80,6 +97,7 @@ public class ClaimsForm  extends JInternalFrame{
         sl.putConstraint(R,text11,550,L,text11);
        sl.putConstraint(L,text11,75,L,jPanel);
         sl.putConstraint(U,text11,3,U,jPanel);
+        sl.putConstraint(D,text11,20,U,text11);
 
         sl.putConstraint(L,label12,744,L,jPanel);
         sl.putConstraint(U,label12,4,U,jPanel);
@@ -140,10 +158,32 @@ public class ClaimsForm  extends JInternalFrame{
         sl.putConstraint(R,text27,90,L,text27);
         sl.putConstraint(L,text27,810,L,jPanel);
         sl.putConstraint(U,text27,26,U,jPanel);
+
+        sl.putConstraint(L,label31,3,L,jPanel);
+        sl.putConstraint(U,label31,67,U,jPanel);
+
+        sl.putConstraint(R,text31,550,L,text31);
+        sl.putConstraint(L,text31,75,L,jPanel);
+        sl.putConstraint(U,text31,66,U,jPanel);
+
+        sl.putConstraint(L,label32,635,L,jPanel);
+        sl.putConstraint(U,label32,67,U,jPanel);
+
+        sl.putConstraint(R,text32,60,L,text32);
+        sl.putConstraint(L,text32,667,L,jPanel);
+        sl.putConstraint(U,text32,66,U,jPanel);
+
+        sl.putConstraint(L,label33,744,L,jPanel);
+        sl.putConstraint(U,label33,67,U,jPanel);
+
+        sl.putConstraint(R,text33,90,L,text33);
+        sl.putConstraint(L,text33,810,L,jPanel);
+        sl.putConstraint(U,text33,66,U,jPanel);
+
        //set border to all textfields
        Font font=new Font(Font.SANS_SERIF,Font.PLAIN,11);
         for (Component component:jPanel.getComponents()) {
-            if (component.getClass() == text11.getClass()) {
+            if (component.getClass() == text12.getClass()) {
                 JTextField text = (JTextField) component;
                 text.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 

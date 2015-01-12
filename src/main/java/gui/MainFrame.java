@@ -1,8 +1,7 @@
 package gui;
 
 
-import com.healthmarketscience.jackcess.Database;
-import com.healthmarketscience.jackcess.DatabaseBuilder;
+import com.healthmarketscience.jackcess.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
+import java.io.*;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 
 
 /**
@@ -21,22 +22,33 @@ public class MainFrame implements ActionListener ,MouseListener{
     JList jlist;
     Object[] tableNames = null;
     JDesktopPane desktopPane;
+    Database db=null;
     public static String pathToData;
     public MainFrame() {
 
        pathToData= "FIP.mdb";
-        System.out.println(pathToData);
+
         UIManager.put("Table.gridColor", Color.gray);
         try {
-            Database db = DatabaseBuilder.open(new File(pathToData));
+            FileChannel channel = new RandomAccessFile(pathToData,"rw").getChannel();
+            db =  new DatabaseBuilder().setChannel(channel).setReadOnly(true).open();
+
+
+//FileLock lock =channel.tryLock();
             tableNames = db.getTableNames().toArray();
-            db.close();
+//lock.release();
+
+           //db.close();
+            channel.close();
+            System.out.println(channel.isOpen());
+
+
 
         } catch (Exception ex) {
-            System.out.println("database not found");
+            System.out.println(ex);
             tableNames =new String[] {"чтото неправильно с путями к БД"};
 
-        }
+        } finally {try {db.close();}catch (IOException ioex){System.out.println(ioex);}}
 
         jfrm = new JFrame("Access Viewer");
 

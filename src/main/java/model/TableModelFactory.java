@@ -7,6 +7,9 @@ import gui.MainFrame;
 import javax.swing.event.TableModelListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.util.*;
 
 /**
@@ -33,11 +36,15 @@ public class TableModelFactory implements javax.swing.table.TableModel{
     public TableModelFactory(String tableName){
        this.tableName=tableName;
         try {
+
             db = DatabaseBuilder.open(new File(MainFrame.pathToData));
+
             Table table = db.getTable(tableName);
+
             columnsProperties = getColumnsProperties(table);
             refreshExternalData();
             refreshData();
+
             db.close();
         } catch (Exception ex){
             System.out.println("database not found");
@@ -122,12 +129,17 @@ public class TableModelFactory implements javax.swing.table.TableModel{
     }
 
     private String[] getForeignSource (String string){
-        String temp = string.replaceFirst("SELECT DISTINCTROW ", "");
-        temp = temp.replaceFirst(" FROM.*","");
-       String tempArray[] = temp.split("[,.!?]+");
-        for (int i=0; i<tempArray.length; i++){
-            tempArray[i]=tempArray[i].replaceAll("[\\[\\]]","").trim();
+       String temp;
+        String tempArray[]=null;
+        if  (string.substring(0,18).equals("SELECT DISTINCTROW")) {
+            temp = string.replaceFirst("SELECT DISTINCTROW ", "");
+            temp = temp.replaceFirst(" FROM.*", "");
+            tempArray = temp.split("[,.!?]+");
+            for (int i = 0; i < tempArray.length; i++) {
+                tempArray[i] = tempArray[i].replaceAll("[\\[\\]]", "").trim();
+            }
         }
+
        return tempArray;
     }
 
